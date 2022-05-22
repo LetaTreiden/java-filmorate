@@ -13,12 +13,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final Map<String, User> users = new HashMap<String, User>();
+    private final Map<Integer, User> users = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
     private int count;
 
     @GetMapping
-    public Map<String, User> findAll() {
+    public Map<Integer, User> findAll() {
         log.info("Список пользователей напечатан");
         return users;
     }
@@ -28,14 +28,14 @@ public class UserController {
         count++;
         user.setId(count);
         validate(user);
-        users.put(user.getEmail(), user);
+        users.put(user.getId(), user);
         return user;
     }
 
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException {
             validate(user);
-            users.put(user.getEmail(), user);
+            users.put(user.getId(), user);
         return user;
     }
 
@@ -43,11 +43,6 @@ public class UserController {
         String string;
         if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             string = "Адрес электронной почты не может быть пустым.";
-            log.info(string);
-            throw new ValidationException(string);
-        }
-        if (users.containsKey(user.getEmail())) {
-            string = ("Пользователь с электронной почтой " + user.getEmail() + " уже зарегистрирован.");
             log.info(string);
             throw new ValidationException(string);
         }

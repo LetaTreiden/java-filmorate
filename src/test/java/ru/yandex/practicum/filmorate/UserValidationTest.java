@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class UserValidationTest {
     private static final UserController controller = new UserController();
 
+    @Test
     public void createIfEverythingIsOk() throws ValidationException {
         User user = new User();
         user.setName("Лина");
@@ -32,23 +33,6 @@ public class UserValidationTest {
         try {
             controller.create(user);
             Assertions.fail("Адрес электронной почты не может быть пустым.");
-        } catch (Exception e) {
-            Assertions.assertNotEquals("", e.getMessage());
-        }
-    }
-
-    @Test
-    public void createIfEmailIsAlreadyExist() throws ValidationException {
-        createIfEverythingIsOk();
-        User user = new User();
-        user.setName("Ева");
-        user.setEmail("treidenp@yandex.ru");
-        user.setLogin("evanepran");
-        user.setBirthday(LocalDate.of(2002, 9, 3));
-
-        try {
-            controller.create(user);
-            Assertions.fail("Пользователь с такой электронной почтой уже зарегистрирован.");
         } catch (Exception e) {
             Assertions.assertNotEquals("", e.getMessage());
         }

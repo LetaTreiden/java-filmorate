@@ -41,6 +41,7 @@ public class FilmController {
             films.put(film.getId(), film);
         } else {
             logger.info("Попытка обновить несуществующий фильм");
+            throw new ValidationException("Попытка обновить несуществующий фильм");
         }
         return film;
     }

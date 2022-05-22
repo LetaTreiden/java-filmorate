@@ -39,6 +39,7 @@ public class UserController {
             users.put(user.getEmail(), user);
         } else {
             log.info("Попытка обновить несуществующего пользователя");
+            throw new ValidationException("Попытка обновить несуществующего пользователя");
         }
         return user;
     }

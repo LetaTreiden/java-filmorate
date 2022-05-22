@@ -36,8 +36,12 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
-        validate(film);
-        films.put(film.getId(), film);
+        if (films.containsKey(film.getId())) {
+            validate(film);
+            films.put(film.getId(), film);
+        } else {
+            logger.info("Попытка обновить несуществующий фильм");
+        }
         return film;
     }
 

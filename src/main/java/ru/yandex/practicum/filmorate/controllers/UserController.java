@@ -19,8 +19,8 @@ public class UserController {
     private int count;
 
     @GetMapping
-    public Collection<User> findAll() {
-        return users.values();
+    public Map<String, User> findAll() {
+        return users;
     }
 
     @PostMapping

@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 @Data
 public class User {
-    String login;
-    String name;
-    int id;
-    String email;
-    LocalDate birthday;
+    private String login;
+    private String name;
+    private int id;
+    private String email;
+    private LocalDate birthday;
 
 }

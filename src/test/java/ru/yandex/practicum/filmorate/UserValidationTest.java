@@ -5,7 +5,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 
 public class UserValidationTest {

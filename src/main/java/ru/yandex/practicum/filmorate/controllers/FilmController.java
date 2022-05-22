@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.slf4j.Logger;
@@ -19,11 +18,12 @@ import java.util.Map;
 public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
-    private static final LocalDate firstReleaseDate = LocalDate.of(1895, 12, 28);
+    private static final LocalDate FIST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private int count = 0;
 
     @GetMapping
     public Collection<Film> getAll() {
+        logger.info("Выведен список всех фильмов");
         return films.values();
     }
 
@@ -33,16 +33,18 @@ public class FilmController {
         film.setId(count);
         validate(film);
         films.put(film.getId(), film);
+        logger.info("Фильм добавлен");
         return film;
     }
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
-         if (films.containsKey(film.getId())) {
+        if (films.containsKey(film.getId())) {
             validate(film);
             films.put(film.getId(), film);
+            logger.info("Фильм обновлен");
         } else {
-            logger.info("Попытка обновить несуществующий фильм");
+            logger.error("Попытка обновить несуществующий фильм");
             throw new ValidationException("Попытка обновить несуществующий фильм");
         }
         return film;
@@ -52,22 +54,22 @@ public class FilmController {
         String string;
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
-            logger.info(string);
+            logger.error(string);
             throw new ValidationException(string);
         }
         if (film.getDescription().length() > 200) {
             string = "Слишком длинное описание. Введите меньше 200 символов";
-            logger.info(string);
+            logger.error(string);
             throw new ValidationException(string);
         }
-        if (film.getReleaseDate().isBefore(firstReleaseDate)) {
+        if (film.getReleaseDate().isBefore(FIST_RELEASE_DATE)) {
             string = "Дата релиза не может быть раньше 28 декабря 1895";
-            logger.info(string);
+            logger.error(string);
             throw new ValidationException(string);
         }
         if (film.getDuration() < 0) {
             string = "Длительность фильма не может быть отрицательной";
-            logger.info(string);
+            logger.error(string);
             throw new ValidationException(string);
         }
     }

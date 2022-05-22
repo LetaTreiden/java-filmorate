@@ -30,6 +30,7 @@ public class UserController {
         user.setId(count);
         validate(user);
         users.put(user.getId(), user);
+        log.info("Пользователь добавлен");
         return user;
     }
 
@@ -38,8 +39,9 @@ public class UserController {
         if (users.containsKey(user.getId())) {
             validate(user);
             users.put(user.getId(), user);
+            log.info("Пользователь обновлен");
         } else {
-            log.info("Попытка обновить несуществующего пользователя");
+            log.error("Попытка обновить несуществующего пользователя");
             throw new ValidationException("Попытка обновить несуществующего пользователя");
         }
 
@@ -50,21 +52,21 @@ public class UserController {
         String string;
         if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             string = "Адрес электронной почты не может быть пустым.";
-            log.info(string);
+            log.error(string);
             throw new ValidationException(string);
         }
         if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             string = ("Логин не может быть пустым или содержать пробелы");
-            log.info(string);
+            log.error(string);
             throw new ValidationException(string);
         }
         if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
-            log.info("Имя равно логину");
+            log.error("Имя равно логину");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
             string = ("Дата рождения не может быть выбрана в будущем");
-            log.info(string);
+            log.error(string);
             throw new ValidationException(string);
         }
     }

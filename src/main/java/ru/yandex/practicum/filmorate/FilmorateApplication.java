@@ -7,9 +7,9 @@ import ru.yandex.practicum.filmorate.controllers.FilmController;
 @SpringBootApplication
 public class FilmorateApplication {
 
-	public static void main(String[] args) {
-		System.out.println(FilmController.class);
-			SpringApplication.run(FilmorateApplication.class, args);
-	}
+    public static void main(String[] args) {
+        System.out.println(FilmController.class);
+        SpringApplication.run(FilmorateApplication.class, args);
+    }
 
 }

@@ -24,37 +24,19 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        String string;
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            string = "Адрес электронной почты не может быть пустым.";
-            log.info(string);
-            throw new ValidationException(string);
-        }
-        if (users.containsKey(user.getEmail())) {
-            string = ("Пользователь с такой электронной почтой уже зарегистрирован.");
-            log.info(string);
-            throw new ValidationException(string);
-        }
-        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
-            string = ("Логин не может быть пустым или содержать пробелы");
-            log.info(string);
-            throw new ValidationException(string);
-        }
-        if (user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-            log.info("Имя равно логину");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            string = ("Дата рождения не может быть выбрана в будущем");
-            log.info(string);
-            throw new ValidationException(string);
-        }
+        validate(user);
         users.put(user.getEmail(), user);
         return user;
     }
 
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException {
+        validate(user);
+        users.put(user.getEmail(), user);
+        return user;
+    }
+
+    private void validate(User user) throws ValidationException {
         String string = null;
         if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             string = "Адрес электронной почты не может быть пустым.";
@@ -80,8 +62,6 @@ public class UserController {
             log.info(string);
             throw new ValidationException(string);
         }
-        users.put(user.getEmail(), user);
-        return user;
     }
 }
 

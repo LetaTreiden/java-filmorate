@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.slf4j.Logger;
@@ -12,10 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequestMapping("/films")
 public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
+    private static final LocalDate firstReleaseDate = LocalDate.of(1895, 12, 28);
 
     @GetMapping
     public Collection<Film> getAll() {
@@ -23,34 +26,19 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@RequestBody Film film) throws ValidationException {
-        String string;
-        if (film.getName().isEmpty() || film.getName() == null) {
-            string = "Название не может быть пустым";
-            logger.info(string);
-            throw new ValidationException(string);
-        }
-        if (film.getDescription().length() > 200) {
-            string = "Слишком длинное описание. Введите меньше 200 символов";
-            logger.info(string);
-            throw new ValidationException(string);
-        }
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            string = "Дата релиза не может быть раньше 28 декабря 1895";
-            logger.info(string);
-            throw new ValidationException(string);
-        }
-        if (film.getDuration().isNegative()) {
-            string = "Длительность фильма не может быть отрицательной";
-            logger.info(string);
-            throw new ValidationException(string);
-        }
+    public void create(@RequestBody Film film) throws ValidationException {
+        validate(film);
         films.put(film.getId(), film);
-        return film;
     }
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
+        validate(film);
+        films.put(film.getId(), film);
+        return film;
+    }
+
+    private void validate(Film film) throws ValidationException {
         String string;
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
@@ -62,7 +50,7 @@ public class FilmController {
             logger.info(string);
             throw new ValidationException(string);
         }
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate().isBefore(firstReleaseDate)) {
             string = "Дата релиза не может быть раньше 28 декабря 1895";
             logger.info(string);
             throw new ValidationException(string);
@@ -72,7 +60,5 @@ public class FilmController {
             logger.info(string);
             throw new ValidationException(string);
         }
-        films.put(film.getId(), film);
-        return film;
     }
 }

@@ -16,6 +16,7 @@ public class UserValidationTest {
     public void clear() {
         controller.findAll().clear();
     }
+
     @Test
     public void createIfEverythingIsOk() throws ValidationException {
         User user = new User();

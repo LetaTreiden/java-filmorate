@@ -19,6 +19,7 @@ public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
     private static final LocalDate firstReleaseDate = LocalDate.of(1895, 12, 28);
+    private int count = 0;
 
     @GetMapping
     public Collection<Film> getAll() {
@@ -27,6 +28,8 @@ public class FilmController {
 
     @PostMapping
     public void create(@RequestBody Film film) throws ValidationException {
+        count++;
+        film.setId(count);
         validate(film);
         films.put(film.getId(), film);
     }

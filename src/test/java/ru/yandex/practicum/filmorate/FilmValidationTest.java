@@ -22,7 +22,6 @@ public class FilmValidationTest {
     @Test
     public void createIfEverythingIsOk() throws ValidationException {
         Film film1 = new Film();
-        film1.setId(1);
         film1.setName("Прошлой ночью в Сохо");
         film1.setDescription("Грезы о Лондоне 1960-х оборачиваются для Элоиз кошмарной реальностью.");
         film1.setReleaseDate(LocalDate.of(2021, 9, 4));
@@ -35,7 +34,6 @@ public class FilmValidationTest {
     @Test
     public void createIfNameIsNull() {
         Film film = new Film();
-        film.setId(1);
         film.setDescription("Писателя в депрессии преследует таинственный подражатель");
         film.setReleaseDate(LocalDate.of(2004, 3, 7));
         film.setDuration(Duration.ofMinutes(96));
@@ -51,7 +49,6 @@ public class FilmValidationTest {
     @Test
     public void createIfDescriptionIsTooLong() {
         Film film = new Film();
-        film.setId(3);
         film.setName("Взрывная блондинка");
         film.setDescription("Агент Лоррейн Бротон, бриллиант в короне Секретной разведывательной службы Ее " +
                 "Величества, не просто мастер шпионажа: она бомбически сексуальна, взрывоопасна и использует весь " +
@@ -72,7 +69,6 @@ public class FilmValidationTest {
     @Test
     public void createIfReleaseDateIsImpossible() {
         Film film = new Film();
-        film.setId(4);
         film.setName("Триггер");
         film.setDescription("Страшная трагедия вынуждает психолога-провокатора вернуться к практике.");
         film.setReleaseDate(LocalDate.of(1894, 3, 12));
@@ -89,7 +85,6 @@ public class FilmValidationTest {
     @Test
     public void createIfDurationIsNegative() {
         Film film = new Film();
-        film.setId(4);
         film.setName("Мистер Робот");
         film.setDescription("Угрюмый хакер борется с капитализмом и самим собой.");
         film.setReleaseDate(LocalDate.of(2015, 3, 17));

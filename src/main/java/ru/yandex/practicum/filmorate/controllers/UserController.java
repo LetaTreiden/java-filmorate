@@ -16,6 +16,7 @@ import java.util.Map;
 public class UserController {
     private final Map<String, User> users = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
+    private int count;
 
     @GetMapping
     public Collection<User> findAll() {
@@ -24,6 +25,8 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
+        count++;
+        user.setId(count);
         validate(user);
         users.put(user.getEmail(), user);
         return user;

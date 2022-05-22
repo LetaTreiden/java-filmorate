@@ -23,7 +23,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public void create(@RequestBody Film film) throws ValidationException {
+    public Film create(@RequestBody Film film) throws ValidationException {
         String string;
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
@@ -46,10 +46,11 @@ public class FilmController {
             throw new ValidationException(string);
         }
         films.put(film.getId(), film);
+        return film;
     }
 
     @PutMapping
-    public void update(@RequestBody Film film) throws ValidationException {
+    public Film update(@RequestBody Film film) throws ValidationException {
         String string;
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
@@ -72,5 +73,6 @@ public class FilmController {
             throw new ValidationException(string);
         }
         films.put(film.getId(), film);
+        return film;
     }
 }

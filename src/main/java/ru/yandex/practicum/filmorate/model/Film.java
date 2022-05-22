@@ -7,8 +7,7 @@ import lombok.Setter;
 import java.time.Duration;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 public class Film {
     private int id;
     private String name;

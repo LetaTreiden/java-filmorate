@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class UserValidationTest {
     private static final UserController controller = new UserController();
-    
+
     public void createIfEverythingIsOk() throws ValidationException {
         User user = new User();
         user.setName("Лина");

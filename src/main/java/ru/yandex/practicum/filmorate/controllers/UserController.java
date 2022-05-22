@@ -34,13 +34,8 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException {
-      //  if (users.containsKey(user.getId())) {
             validate(user);
             users.put(user.getEmail(), user);
-      //  } else {
-         //   log.info("Попытка обновить несуществующего пользователя");
-          //  throw new ValidationException("Попытка обновить несуществующего пользователя");
-      //  }
         return user;
     }
 

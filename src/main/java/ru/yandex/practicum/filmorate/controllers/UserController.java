@@ -38,7 +38,8 @@ public class UserController {
             validate(user);
             users.put(user.getId(), user);
         } else {
-            log.info("Попытка обновить несущксивующего пользователя");
+            log.info("Попытка обновить несуществующего пользователя");
+            throw new ValidationException("Попытка обновить несуществующего пользователя");
         }
 
         return user;

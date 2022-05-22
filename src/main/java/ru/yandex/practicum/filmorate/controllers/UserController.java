@@ -35,7 +35,7 @@ public class UserController {
             log.info(string);
             throw new ValidationException(string);
         }
-        if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             string = ("Логин не может быть пустым или содержать пробелы");
             log.info(string);
             throw new ValidationException(string);
@@ -66,7 +66,7 @@ public class UserController {
             log.info(string);
             throw new ValidationException(string);
         }
-        if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             string = ("Логин не может быть пустым или содержать пробелы");
             log.info(string);
             throw new ValidationException(string);

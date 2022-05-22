@@ -1,5 +1,10 @@
 package ru.yandex.practicum.filmorate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -9,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Objects;
 
 public class FilmValidationTest {
 
@@ -28,7 +35,7 @@ public class FilmValidationTest {
         film1.setReleaseDate(LocalDate.of(2021, 9, 4));
         film1.setDuration(Duration.ofMinutes(116));
 
-        Assertions.assertEquals(film1, filmController.create(film1));
+        filmController.create(film1);
         Assertions.assertEquals(1, filmController.getAll().size());
     }
 

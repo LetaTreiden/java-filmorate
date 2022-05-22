@@ -7,19 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, User> users = new HashMap<String, User>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
     private int count;
 
     @GetMapping
     public Map<String, User> findAll() {
+        log.info("Список пользователей напечатан");
         return users;
     }
 
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     private void validate(User user) throws ValidationException {
-        String string = null;
+        String string;
         if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             string = "Адрес электронной почты не может быть пустым.";
             log.info(string);

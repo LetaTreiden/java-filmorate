@@ -63,7 +63,7 @@ public class FilmController {
             logger.info(string);
             throw new ValidationException(string);
         }
-        if (film.getDuration().isNegative()) {
+        if (film.getDuration() < 0) {
             string = "Длительность фильма не может быть отрицательной";
             logger.info(string);
             throw new ValidationException(string);

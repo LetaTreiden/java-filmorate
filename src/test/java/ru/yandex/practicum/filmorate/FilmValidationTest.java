@@ -4,7 +4,6 @@ import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -20,7 +19,7 @@ public class FilmValidationTest {
         film1.setName("Прошлой ночью в Сохо");
         film1.setDescription("Грезы о Лондоне 1960-х оборачиваются для Элоиз кошмарной реальностью.");
         film1.setReleaseDate(LocalDate.of(2021, 9, 4));
-        film1.setDuration(Duration.ofMinutes(116));
+        film1.setDuration(116);
 
         filmController.create(film1);
         Assertions.assertEquals(1, filmController.getAll().size());
@@ -31,7 +30,7 @@ public class FilmValidationTest {
         Film film = new Film();
         film.setDescription("Писателя в депрессии преследует таинственный подражатель");
         film.setReleaseDate(LocalDate.of(2004, 3, 7));
-        film.setDuration(Duration.ofMinutes(96));
+        film.setDuration(96);
 
         try {
             filmController.create(film);
@@ -51,7 +50,7 @@ public class FilmValidationTest {
                 "направляют с заданием вернуть секретное досье, она вынуждена объединиться с агентом под прикрытием " +
                 "Дэвидом Персивалем. Вместе им предстоит проложить путь через тернии смертельных шпионских игр.");
         film.setReleaseDate(LocalDate.of(2017, 3, 12));
-        film.setDuration(Duration.ofMinutes(115));
+        film.setDuration(115);
 
         try {
             filmController.create(film);
@@ -67,7 +66,7 @@ public class FilmValidationTest {
         film.setName("Триггер");
         film.setDescription("Страшная трагедия вынуждает психолога-провокатора вернуться к практике.");
         film.setReleaseDate(LocalDate.of(1894, 3, 12));
-        film.setDuration(Duration.ofMinutes(52));
+        film.setDuration(52);
 
         try {
             filmController.create(film);
@@ -83,7 +82,7 @@ public class FilmValidationTest {
         film.setName("Мистер Робот");
         film.setDescription("Угрюмый хакер борется с капитализмом и самим собой.");
         film.setReleaseDate(LocalDate.of(2015, 3, 17));
-        film.setDuration(Duration.ofMinutes(-1));
+        film.setDuration(-1);
 
         try {
             filmController.create(film);

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.slf4j.Logger;
@@ -27,11 +28,12 @@ public class FilmController {
     }
 
     @PostMapping
-    public void create(@RequestBody Film film) throws ValidationException {
+    public Film create(@RequestBody Film film) throws ValidationException {
         count++;
         film.setId(count);
         validate(film);
         films.put(film.getId(), film);
+        return film;
     }
 
     @PutMapping

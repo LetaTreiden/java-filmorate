@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,9 @@ public class UserController {
     private int count;
 
     @GetMapping
-    public Map<Integer, User> findAll() {
+    public Collection<User> findAll() {
         log.info("Список пользователей напечатан");
-        return users;
+        return users.values();
     }
 
     @PostMapping

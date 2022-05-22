@@ -11,16 +11,9 @@ import java.time.LocalDate;
 
 public class UserValidationTest {
     private static final UserController controller = new UserController();
-
-    @BeforeEach
-    public void clear() {
-        controller.findAll().clear();
-    }
-
-    @Test
+    
     public void createIfEverythingIsOk() throws ValidationException {
         User user = new User();
-        user.setId(1);
         user.setName("Лина");
         user.setEmail("treidenp@yandex.ru");
         user.setLogin("LetaT");
@@ -33,7 +26,6 @@ public class UserValidationTest {
     @Test
     public void createIfEmailIsEmpty() {
         User user = new User();
-        user.setId(2);
         user.setName("Надя");
         user.setLogin("NadyaTreiden");
         user.setBirthday(LocalDate.of(1977, 8, 7));
@@ -50,7 +42,6 @@ public class UserValidationTest {
     public void createIfEmailIsAlreadyExist() throws ValidationException {
         createIfEverythingIsOk();
         User user = new User();
-        user.setId(3);
         user.setName("Ева");
         user.setEmail("treidenp@yandex.ru");
         user.setLogin("evanepran");
@@ -67,7 +58,6 @@ public class UserValidationTest {
     @Test
     public void createIfLoginIsEmpty() {
         User user = new User();
-        user.setId(4);
         user.setName("Ира");
         user.setEmail("i.odnoshivkina@yandex.ru");
         user.setBirthday(LocalDate.of(2002, 10, 25));
@@ -83,7 +73,6 @@ public class UserValidationTest {
     @Test
     public void createIfBirthdayInFuture() {
         User user = new User();
-        user.setId(5);
         user.setName("Соня");
         user.setLogin("SEremina");
         user.setEmail("seremina@yandex.ru");

@@ -14,11 +14,6 @@ public class FilmValidationTest {
 
     private final FilmController filmController = new FilmController();
 
-    @BeforeEach
-    public void clear() {
-        filmController.getAll().clear();
-    }
-
     @Test
     public void createIfEverythingIsOk() throws ValidationException {
         Film film1 = new Film();

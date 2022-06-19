@@ -39,8 +39,8 @@ public class UserController {
 
     //показать всех общих друзей
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Set showMutual(@RequestBody User user1, @RequestBody User user2) {
-        return userService.showMutualFriends(user1, user2);
+    public Set showMutual(@PathVariable int id, @PathVariable int otherId) throws ValidationException, NotFoundException {
+        return userService.showMutualFriends(id, otherId);
     }
 
     //создать нового юзера
@@ -55,16 +55,16 @@ public class UserController {
     }
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
-    public void addNewFriend(@PathVariable int id1, @PathVariable int id2) throws ValidationException, NotFoundException
+    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException, NotFoundException
     {
-        userService.addFriend(id1, id2);
+        userService.addFriend(id, friendId);
     }
 
     //удалить друга
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable int id1, @PathVariable int id2) throws ValidationException, NotFoundException
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException, NotFoundException
     {
-        userService.deleteFriend(id1, id2);
+        userService.deleteFriend(id, friendId);
     }
 }
 

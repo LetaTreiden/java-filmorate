@@ -64,10 +64,12 @@ public class UserService {
             }
     }
 
-    public Set showMutualFriends(User user1, User user2) {
+    public Set showMutualFriends(int id1, int id2) throws ValidationException, NotFoundException {
+        validate(userStorage.getById(id1));
+        validate(userStorage.getById(id2));
         Set<User> mutualFriends = new HashSet<>();
-        for (User user : user1.getFriends()) {
-            if (user2.getFriends().contains(user)) {
+        for (User user : userStorage.getById(id1).getFriends()) {
+            if (userStorage.getById(id2).getFriends().contains(user)) {
                 mutualFriends.add(user);
             }
         }

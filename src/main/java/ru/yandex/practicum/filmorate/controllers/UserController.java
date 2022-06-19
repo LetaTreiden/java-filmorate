@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import org.springframework.web.bind.annotation.*;
@@ -54,14 +55,16 @@ public class UserController {
     }
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
-    public void addNewFriend(@RequestBody User user1, @RequestBody User user2) throws ValidationException {
-        userService.addFriend(user1.getId(), user2.getId());
+    public void addNewFriend(@PathVariable int id1, @PathVariable int id2) throws ValidationException, NotFoundException
+    {
+        userService.addFriend(id1, id2);
     }
 
     //удалить друга
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@RequestBody User user1, User user2) throws ValidationException {
-        userService.deleteFriend(user1, user2);
+    public void deleteFriend(@PathVariable int id1, @PathVariable int id2) throws ValidationException, NotFoundException
+    {
+        userService.deleteFriend(id1, id2);
     }
 }
 

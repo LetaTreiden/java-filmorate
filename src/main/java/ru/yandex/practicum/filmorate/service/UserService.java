@@ -33,9 +33,11 @@ public class UserService {
         }
     }
 
-    public void addFriend(Integer id1, Integer id2) throws ValidationException {
+    public void addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
         Set<User> friend1 = new HashSet<>();
         Set<User> friend2 = new HashSet<>();
+        validate(userStorage.getById(id1));
+        validate(userStorage.getById(id2));
             if (!userStorage.getById(id1).getFriends().contains(userStorage.getById(id2)) &&
                     userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
                 friend1.add(userStorage.getById(id1));
@@ -49,18 +51,17 @@ public class UserService {
             }
     }
 
-    public void deleteFriend(User user1, User user2) throws ValidationException {
-        if (userStorage.findAll().contains(user1) && userStorage.findAll().contains(user2)) {
-            if (user1.getFriends().contains(user2) && user2.getFriends().contains(user1)) {
-                user1.getFriends().remove(user2);
-                user2.getFriends().remove(user1);
+    public void deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {
+        validate(userStorage.getById(id1));
+        validate(userStorage.getById(id2));
+            if (!userStorage.getById(id1).getFriends().contains(userStorage.getById(id2)) &&
+                    userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
+                userStorage.getById(id1).getFriends().remove(userStorage.getById(id2));
+                userStorage.getById(id2).getFriends().remove(userStorage.getById(id2));
             } else {
-                throw new ValidationException("Пользователи " + user1.getLogin() + " и " + user2.getLogin() +
-                        " не друзья!");
+                throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
+                        userStorage.getById(id2).getLogin() + " не друзья!");
             }
-        } else {
-            throw new ValidationException("Проверьте наличие пользователей. Аккаунт(ы) не зарегистрирован(ы)");
-        }
     }
 
     public Set showMutualFriends(User user1, User user2) {

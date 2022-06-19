@@ -13,22 +13,22 @@ public class ErrorHandler {
     //400, Ошибка валидации
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Error handleValidationError(final ValidationException e) {
-        return new Error("Ошибка валидации", e.getMessage());
+    public ErrorResponse handleValidationError(final ValidationException e) {
+        return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 
     //404, Ошибка поиска
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Error handleSearchError(final NotFoundException e) {
-        return new Error("Ошибка поиска", e.getMessage());
+    public ErrorResponse handleSearchError(final NotFoundException e) {
+        return new ErrorResponse("Ошибка поиска", e.getMessage());
     }
 
     //500, Исключение
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Error handleException(final Throwable e) {
-        return new Error("Исключение", e.getMessage());
+    public ErrorResponse handleException(final Throwable e) {
+        return new ErrorResponse("Исключение", e.getMessage());
     }
 
 }

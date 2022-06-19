@@ -34,14 +34,14 @@ public class UserService {
     }
 
     public void addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
-        Set<User> friend1 = new HashSet<>();
-        Set<User> friend2 = new HashSet<>();
+        Set<Integer> friend1 = new HashSet<>();
+        Set<Integer> friend2 = new HashSet<>();
         validate(userStorage.getById(id1));
         validate(userStorage.getById(id2));
             if (!userStorage.getById(id1).getFriends().contains(userStorage.getById(id2)) &&
-                    userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
-                friend1.add(userStorage.getById(id1));
-                friend2.add(userStorage.getById(id2));
+                    !userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
+                friend1.add(id1);
+                friend2.add(id2);
 
                 userStorage.getById(id1).setFriends(friend2);
                 userStorage.getById(id2).setFriends(friend1);
@@ -67,10 +67,10 @@ public class UserService {
     public Set showMutualFriends(int id1, int id2) throws ValidationException, NotFoundException {
         validate(userStorage.getById(id1));
         validate(userStorage.getById(id2));
-        Set<User> mutualFriends = new HashSet<>();
-        for (User user : userStorage.getById(id1).getFriends()) {
-            if (userStorage.getById(id2).getFriends().contains(user)) {
-                mutualFriends.add(user);
+        Set<Integer> mutualFriends = new HashSet<>();
+        for (Integer id : userStorage.getById(id1).getFriends()) {
+            if (userStorage.getById(id2).getFriends().contains(id)) {
+                mutualFriends.add(id);
             }
         }
         return mutualFriends;

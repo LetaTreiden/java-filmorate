@@ -33,8 +33,8 @@ public class UserController {
 
     //список всех друзей пользователя
     @GetMapping("/{id}/friends")
-    public Set<User> showFriends(@RequestBody User user) {
-        return user.getFriends();
+    public Set<Integer> showFriends(@PathVariable int id) {
+        return userStorage.getById(id).getFriends();
     }
 
     //показать всех общих друзей
@@ -55,15 +55,15 @@ public class UserController {
     }
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
-    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException, NotFoundException
-    {
+    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
+            NotFoundException {
         userService.addFriend(id, friendId);
     }
 
     //удалить друга
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException, NotFoundException
-    {
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
+            NotFoundException {
         userService.deleteFriend(id, friendId);
     }
 }

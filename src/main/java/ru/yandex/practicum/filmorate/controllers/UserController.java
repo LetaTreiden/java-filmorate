@@ -55,7 +55,7 @@ public class UserController {
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
     public void addNewFriend(@RequestBody User user1, @RequestBody User user2) throws ValidationException {
-        userService.addFriend(user1, user2);
+        userService.addFriend(user1.getId(), user2.getId());
     }
 
     //удалить друга

@@ -18,4 +18,6 @@ public interface UserStorage {
 
     @PutMapping
     User update(@RequestBody User user) throws ValidationException;
+
+    User getById(int id);
 }

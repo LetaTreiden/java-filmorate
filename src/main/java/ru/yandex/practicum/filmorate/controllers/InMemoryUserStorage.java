@@ -52,6 +52,11 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    @Override
+    public User getById(int id) {
+        return users.get(id);
+    }
+
     private void validate(User user) throws ValidationException {
         String string;
         if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {

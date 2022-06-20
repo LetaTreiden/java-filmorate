@@ -43,6 +43,11 @@ public class UserController {
         return userService.showMutualFriends(id, otherId);
     }
 
+    @GetMapping("/{id}/")
+    public User getUser(@PathVariable int id) {
+        return userStorage.getById(id);
+    }
+
     //создать нового юзера
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {

@@ -30,6 +30,11 @@ public class FilmController implements FilmStorage {
         return filmStorage.getAll();
     }
 
+    @GetMapping("/{id}/")
+    public Film getFilm(@PathVariable int id) {
+        return filmStorage.getById(id);
+    }
+
    @GetMapping("/popular?count={count}")
    public Collection<Film> printBestCount(@PathVariable Integer count) {
         if (count == null || count == 0) {

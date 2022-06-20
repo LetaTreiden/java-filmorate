@@ -13,14 +13,14 @@ public class ErrorHandler {
     //400, Ошибка валидации
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationError(final ValidationException e) {
+    public ErrorResponse handleValidate(final ValidationException e) {
         return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 
     //404, Ошибка поиска
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleSearchError(final NotFoundException e) {
+    public ErrorResponse handleNotFound(final NotFoundException e) {
         return new ErrorResponse("Ошибка поиска", e.getMessage());
     }
 

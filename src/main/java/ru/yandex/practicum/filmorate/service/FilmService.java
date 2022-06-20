@@ -50,7 +50,7 @@ public class FilmService {
     public Set getRate(Integer size) {
         Set<Film> rated = new HashSet<>();
         int count = 0;
-        if (rates.size() > size) {
+        if (rates.size() < size) {
             for (Film film: rates) {
                 while (count <= size) {
                     rated.add(film);

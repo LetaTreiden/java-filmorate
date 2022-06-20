@@ -30,5 +30,4 @@ public class ErrorHandler {
     public ErrorResponse handleException(final Throwable e) {
         return new ErrorResponse("Исключение", e.getMessage());
     }
-
 }

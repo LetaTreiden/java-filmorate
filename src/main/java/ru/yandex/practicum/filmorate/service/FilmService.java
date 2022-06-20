@@ -21,28 +21,28 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public void like(Film film, User user) throws ValidationException {
-        isFilmsAndUsersExist(film, user);
+    public void like(Integer filmID, Integer userID) throws ValidationException {
+        isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
         Set<User> newLike = new HashSet<>();
-        newLike.add(user);
-        if (!film.getLikes().contains(user)) {
-            film.setLikes(newLike);
+        newLike.add(userStorage.getById(userID));
+        if (!filmStorage.getById(filmID).getLikes().contains(userStorage.getById(userID))) {
+            filmStorage.getById(filmID).setLikes(newLike);
         } else {
-            throw new ValidationException("Пользователь " + user.getLogin() + "  уже поставил лайк фильму "
-                    + film.getName());
+            throw new ValidationException("Пользователь " + userStorage.getById(userID).getLogin() +
+                    "  уже поставил лайк фильму " + filmStorage.getById(filmID).getName());
         }
     }
 
-    public void dislike(Film film, User user) throws ValidationException {
-        isFilmsAndUsersExist(film, user);
-        Set<User> newLike = film.getLikes();
-       if (newLike.contains(user)) {
-           newLike.remove(user);
-           film.getLikes().clear();
-           film.setLikes(newLike);
+    public void dislike(Integer filmID, Integer userID) throws ValidationException {
+        isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
+        Set<User> newLike = filmStorage.getById(filmID).getLikes();
+       if (newLike.contains(userStorage.getById(userID))) {
+           newLike.remove(userStorage.getById(userID));
+           filmStorage.getById(filmID).getLikes().clear();
+           filmStorage.getById(filmID).setLikes(newLike);
        } else {
-           throw new ValidationException("Пользователь " + user.getLogin() + " еще не ставил лайк фильму "
-                   + film.getName());
+           throw new ValidationException("Пользователь " + userStorage.getById(userID).getLogin() +
+                   " еще не ставил лайк фильму " + filmStorage.getById(filmID).getName());
        }
     }
 

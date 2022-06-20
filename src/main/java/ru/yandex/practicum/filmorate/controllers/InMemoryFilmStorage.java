@@ -23,6 +23,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     private static final LocalDate FIST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private int count = 0;
 
+    public Film getById(int id) {
+        return films.get(id);
+    }
+
     @GetMapping
     public Collection<Film> getAll() {
         logger.info("Выведен список всех фильмов");

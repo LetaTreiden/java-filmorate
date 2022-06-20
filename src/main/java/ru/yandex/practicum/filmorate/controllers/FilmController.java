@@ -30,7 +30,7 @@ public class FilmController implements FilmStorage {
     }
 
    @GetMapping("/popular?count={count}")
-   public Collection<Film> printBestCount(@RequestBody Integer count) {
+   public Collection<Film> printBestCount(@PathVariable Integer count) {
         if (count == null || count == 0) {
             count = 10;
         }
@@ -48,12 +48,12 @@ public class FilmController implements FilmStorage {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void newLike(@RequestBody Film film, @RequestBody User user) throws ValidationException {
-        filmService.like(film, user);
+    public void newLike(@PathVariable int id, @PathVariable int userId) throws ValidationException {
+        filmService.like(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void deleteLike(@RequestBody Film film, @RequestBody User user) throws ValidationException {
-        filmService.dislike(film, user);
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws ValidationException {
+        filmService.dislike(id, userId);
     }
 }

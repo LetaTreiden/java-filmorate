@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -17,7 +18,7 @@ public interface UserStorage {
     User create(@RequestBody User user) throws ValidationException;
 
     @PutMapping
-    User update(@RequestBody User user) throws ValidationException;
+    User update(@RequestBody User user) throws ValidationException, NotFoundException;
 
     User getById(int id);
 }

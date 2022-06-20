@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
@@ -44,14 +45,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @PutMapping
-    public Film update(@RequestBody Film film) throws ValidationException {
+    public Film update(@RequestBody Film film) throws ValidationException, NotFoundException {
         if (films.containsKey(film.getId())) {
             validate(film);
             films.put(film.getId(), film);
             logger.info("Фильм обновлен");
         } else {
             logger.error("Попытка обновить несуществующий фильм");
-            throw new ValidationException("Попытка обновить несуществующий фильм");
+            throw new NotFoundException("Попытка обновить несуществующий фильм");
         }
         return film;
     }

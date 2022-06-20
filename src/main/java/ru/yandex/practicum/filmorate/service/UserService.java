@@ -24,7 +24,7 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    private void validate(User user) throws ValidationException, NotFoundException {
+    private void validate(User user) throws NotFoundException {
         String string;
         if (!userStorage.findAll().contains(user)) {
             string = "Пользователь " + user.getLogin() + " не существует";

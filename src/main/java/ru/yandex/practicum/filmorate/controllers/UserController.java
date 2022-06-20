@@ -50,7 +50,7 @@ public class UserController {
     }
     //обновить существующего юзера
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
+    public User update(@RequestBody User user) throws ValidationException, NotFoundException {
         return userStorage.update(user);
     }
     //добавить нового друга

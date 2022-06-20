@@ -52,7 +52,7 @@ public class FilmService {
         int count = 0;
         if (rates.size() > size) {
             for (Film film: rates) {
-                while (count < size) {
+                while (count <= size) {
                     rated.add(film);
                     count++;
                 }

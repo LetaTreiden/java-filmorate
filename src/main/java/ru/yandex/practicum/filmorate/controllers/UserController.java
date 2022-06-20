@@ -1,70 +1,74 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Set;
-
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    InMemoryUserStorage userStorage;
-    UserService userService;
-    InMemoryFilmStorage filmStorage;
+    private final Map<Integer, User> users = new HashMap<>();
+    private final static Logger log = LoggerFactory.getLogger(User.class);
+    private int count;
 
-    @Autowired
-    public UserController() {
-        userStorage = new InMemoryUserStorage();
-        filmStorage = new InMemoryFilmStorage();
-        userService = new UserService(filmStorage, userStorage);
-    }
-
-    //получить список всех пользователей
     @GetMapping
     public Collection<User> findAll() {
-        return userStorage.findAll();
+        log.info("Список пользователей напечатан");
+        return users.values();
     }
 
-    //список всех друзей пользователя
-    @GetMapping("/{id}/friends")
-    public Set<Integer> showFriends(@PathVariable int id) {
-        return userStorage.getById(id).getFriends();
-    }
-
-    //показать всех общих друзей
-    @GetMapping("/{id}/friends/common/{otherId}")
-    public Set showMutual(@PathVariable int id, @PathVariable int otherId) throws ValidationException, NotFoundException {
-        return userService.showMutualFriends(id, otherId);
-    }
-
-    //создать нового юзера
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        return userStorage.create(user);
-    }
-    //обновить существующего юзера
-    @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
-        return userStorage.update(user);
-    }
-    //добавить нового друга
-    @PutMapping("/{id}/friends/{friendId}")
-    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
-            NotFoundException {
-        userService.addFriend(id, friendId);
+        count++;
+        user.setId(count);
+        validate(user);
+        users.put(user.getId(), user);
+        log.info("Пользователь добавлен");
+        return user;
     }
 
-    //удалить друга
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
-            NotFoundException {
-        userService.deleteFriend(id, friendId);
+    @PutMapping
+    public User update(@RequestBody User user) throws ValidationException {
+        if (users.containsKey(user.getId())) {
+            validate(user);
+            users.put(user.getId(), user);
+            log.info("Пользователь обновлен");
+        } else {
+            log.error("Попытка обновить несуществующего пользователя");
+            throw new ValidationException("Попытка обновить несуществующего пользователя");
+        }
+
+        return user;
+    }
+
+    private void validate(User user) throws ValidationException {
+        String string;
+        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
+            string = "Адрес электронной почты не может быть пустым.";
+            log.error(string);
+            throw new ValidationException(string);
+        }
+        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
+            string = ("Логин не может быть пустым или содержать пробелы");
+            log.error(string);
+            throw new ValidationException(string);
+        }
+        if (user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+            log.error("Имя равно логину");
+        }
+        if (user.getBirthday().isAfter(LocalDate.now())) {
+            string = ("Дата рождения не может быть выбрана в будущем");
+            log.error(string);
+            throw new ValidationException(string);
+        }
     }
 }
 

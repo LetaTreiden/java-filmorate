@@ -27,7 +27,7 @@ public class ErrorHandler {
     //500, Исключение
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(final Throwable e) {
+    public ErrorResponse handleException(final Exception e) {
         return new ErrorResponse("Исключение", e.getMessage());
     }
 }

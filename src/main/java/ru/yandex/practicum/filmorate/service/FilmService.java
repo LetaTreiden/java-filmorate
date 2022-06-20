@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -21,7 +22,7 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public void like(Integer filmID, Integer userID) throws ValidationException {
+    public void like(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
         isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
         Set<User> newLike = new HashSet<>();
         newLike.add(userStorage.getById(userID));
@@ -33,7 +34,7 @@ public class FilmService {
         }
     }
 
-    public void dislike(Integer filmID, Integer userID) throws ValidationException {
+    public void dislike(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
         isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
         Set<User> newLike = filmStorage.getById(filmID).getLikes();
        if (newLike.contains(userStorage.getById(userID))) {
@@ -62,12 +63,12 @@ public class FilmService {
         return rated;
     }
 
-    private void isFilmsAndUsersExist(Film film, User user) throws ValidationException {
+    private void isFilmsAndUsersExist(Film film, User user) throws NotFoundException {
         if (!filmStorage.getAll().contains(film)) {
-            throw new ValidationException("Нет такого фильма");
+            throw new NotFoundException("Нет такого фильма");
         }
         if (!userStorage.findAll().contains(user)) {
-            throw new ValidationException("Нет такого пользователя");
+            throw new NotFoundException("Нет такого пользователя");
         }
     }
 }

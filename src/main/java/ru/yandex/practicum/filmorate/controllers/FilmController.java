@@ -54,12 +54,12 @@ public class FilmController implements FilmStorage {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void newLike(@PathVariable int id, @PathVariable int userId) throws ValidationException {
+    public void newLike(@PathVariable int id, @PathVariable int userId) throws ValidationException, NotFoundException {
         filmService.like(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws ValidationException {
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws ValidationException, NotFoundException {
         filmService.dislike(id, userId);
     }
 }

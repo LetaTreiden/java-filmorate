@@ -1,15 +1,21 @@
 package ru.yandex.practicum.filmorate;
 
 import ru.yandex.practicum.filmorate.controllers.FilmController;
+import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.validation.Validate;
+
 import java.time.LocalDate;
 
 public class FilmValidationTest {
+    private final InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
 
-    private final FilmController filmController = new FilmController();
+    private final FilmService filmService = new FilmService(inMemoryFilmStorage);
+    private final FilmController filmController = new FilmController(filmService);
 
     @Test
     public void createIfEverythingIsOk() throws ValidationException {

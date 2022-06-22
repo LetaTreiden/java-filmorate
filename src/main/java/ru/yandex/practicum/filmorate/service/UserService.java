@@ -3,24 +3,25 @@ package ru.yandex.practicum.filmorate.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class UserService {
 
-    private final InMemoryFilmStorage filmStorage;
     private final InMemoryUserStorage userStorage;
     private final static Logger log = LoggerFactory.getLogger(User.class);
 
-    public UserService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
-        this.filmStorage = filmStorage;
+    public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -31,6 +32,26 @@ public class UserService {
             log.error(string);
             throw new NotFoundException(string);
         }
+    }
+
+    public Collection<User> getAll() {
+        return userStorage.findAll();
+    }
+
+    public Set<Integer> getFriends(int id) {
+        return userStorage.getById(id).getFriends();
+    }
+
+    public User getUser(int id) {
+        return userStorage.getById(id);
+    }
+
+    public User create(User user) throws ValidationException {
+        return userStorage.create(user);
+    }
+
+    public User update(User user) throws ValidationException, NotFoundException {
+        return userStorage.update(user);
     }
 
     public User addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {

@@ -34,12 +34,13 @@ public class UserService {
     }
 
     public void addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
+        log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
         validate(userStorage.getById(id1));
         validate(userStorage.getById(id2));
-            if (!userStorage.getById(id1).getFriends().contains(userStorage.getById(id2)) &&
-                    !userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
+            if (!userStorage.getById(id1).getFriends().contains(id2) &&
+                    !userStorage.getById(id2).getFriends().contains(id2)) {
                 friend1.add(id1);
                 friend2.add(id2);
 

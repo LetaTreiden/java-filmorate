@@ -33,7 +33,7 @@ public class UserService {
         }
     }
 
-    public void addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
+    public User addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
         log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
@@ -50,6 +50,7 @@ public class UserService {
                 throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
                         userStorage.getById(id2).getLogin() + " уже друзья!");
             }
+            return userStorage.getById(id1);
     }
 
     public void deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {

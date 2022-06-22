@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
@@ -16,6 +18,7 @@ public class FilmService {
     private final InMemoryFilmStorage filmStorage;
     private final InMemoryUserStorage userStorage;
     private Set<Film> rates = new TreeSet<>();
+    private final static Logger log = LoggerFactory.getLogger(User.class);
 
     public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
         this.filmStorage = filmStorage;
@@ -23,11 +26,14 @@ public class FilmService {
     }
 
     public void like(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
+        log.info("Пытаемся поставиль лайк");
         isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
-        Set<User> newLike = new HashSet<>();
-        newLike.add(userStorage.getById(userID));
+        log.info("Фильм и пользователь существуют");
+        Set<Integer> newLike = new HashSet<>();
+        newLike.add(userID);
         if (!filmStorage.getById(filmID).getLikes().contains(userStorage.getById(userID))) {
             filmStorage.getById(filmID).setLikes(newLike);
+            log.info("Лайк поставлен");
         } else {
             throw new ValidationException("Пользователь " + userStorage.getById(userID).getLogin() +
                     "  уже поставил лайк фильму " + filmStorage.getById(filmID).getName());
@@ -36,11 +42,8 @@ public class FilmService {
 
     public void dislike(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
         isFilmsAndUsersExist(filmStorage.getById(filmID), userStorage.getById(userID));
-        Set<User> newLike = filmStorage.getById(filmID).getLikes();
-       if (newLike.contains(userStorage.getById(userID))) {
-           newLike.remove(userStorage.getById(userID));
+       if (filmStorage.getById(filmID).getLikes().contains(userID)) {
            filmStorage.getById(filmID).getLikes().clear();
-           filmStorage.getById(filmID).setLikes(newLike);
        } else {
            throw new ValidationException("Пользователь " + userStorage.getById(userID).getLogin() +
                    " еще не ставил лайк фильму " + filmStorage.getById(filmID).getName());

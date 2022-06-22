@@ -3,9 +3,6 @@ package ru.yandex.practicum.filmorate.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -23,13 +20,13 @@ public class InMemoryUserStorage implements UserStorage {
     private final static Logger log = LoggerFactory.getLogger(User.class);
     private int count;
 
-    @GetMapping
+    @Override
     public Collection<User> findAll() {
         log.info("Список пользователей напечатан");
         return users.values();
     }
 
-    @PostMapping
+    @Override
     public User create(@RequestBody User user) throws ValidationException {
         count++;
         user.setId(count);
@@ -39,7 +36,7 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-    @PutMapping
+    @Override
     public User update(@RequestBody User user) throws ValidationException, NotFoundException {
         if (users.containsKey(user.getId())) {
             validate(user);
@@ -54,7 +51,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(int id)  {
         return users.get(id);
     }
 

@@ -13,7 +13,7 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private int duration;
-    private Set<User> likes = new HashSet<>();
+    private Set<Integer> likes = new HashSet<>();
 
     public int compareTo(Film o) {
         int thisSize = this.getLikes().size();

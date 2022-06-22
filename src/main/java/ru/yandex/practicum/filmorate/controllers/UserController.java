@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -17,6 +19,8 @@ public class UserController {
     InMemoryUserStorage userStorage;
     UserService userService;
     InMemoryFilmStorage filmStorage;
+
+    private final static Logger log = LoggerFactory.getLogger(User.class);
 
     @Autowired
     public UserController() {
@@ -43,8 +47,9 @@ public class UserController {
         return userService.showMutualFriends(id, otherId);
     }
 
-    @GetMapping("/{id}/")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable int id) {
+        log.info("По идее процесс начался");
         return userStorage.getById(id);
     }
 

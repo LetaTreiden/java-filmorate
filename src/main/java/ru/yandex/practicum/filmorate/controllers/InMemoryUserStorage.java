@@ -30,16 +30,14 @@ public class InMemoryUserStorage implements UserStorage {
     public User create(@RequestBody User user) throws ValidationException {
         count++;
         user.setId(count);
-        validator.validateUser(user);
         users.put(user.getId(), user);
         log.info("Пользователь добавлен");
         return user;
     }
 
     @Override
-    public User update(@RequestBody User user) throws ValidationException, NotFoundException {
+    public User update(@RequestBody User user) throws NotFoundException {
         if (users.containsKey(user.getId())) {
-            validator.validateUser(user);
             users.put(user.getId(), user);
             log.info("Пользователь обновлен");
         } else {

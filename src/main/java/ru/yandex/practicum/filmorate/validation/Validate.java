@@ -62,19 +62,21 @@ public class Validate {
             throw new ValidationException(string);
         }
     }
-    public void isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
+    public boolean isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
         System.out.println(film);
         System.out.println(filmStorage.getAll());
         if (film.getId() <= 0 || !filmStorage.getAll().containsKey(film.getId())) {
             throw new NotFoundException("Нет фильма с таким ID.");
         }
+        return true;
     }
 
-    public void isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException{
+    public boolean isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException{
         if (!userStorage.findAll().contains(userStorage.getById(id))) {
             string = "Такого пользователя не существует";
             logger.error(string);
             throw new NotFoundException(string);
         }
+        return true;
     }
 }

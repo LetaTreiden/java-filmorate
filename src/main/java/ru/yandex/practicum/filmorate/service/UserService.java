@@ -38,10 +38,12 @@ public class UserService {
     }
 
     public User create(User user) throws ValidationException {
+        validator.validateUser(user);
         return userStorage.create(user);
     }
 
     public User update(User user) throws ValidationException, NotFoundException {
+        validator.validateUser(user);
         return userStorage.update(user);
     }
 

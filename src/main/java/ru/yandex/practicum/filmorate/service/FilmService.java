@@ -26,9 +26,10 @@ public class FilmService {
     private final Validate validation = new Validate();
 
     public Film getFilm(int id) throws NotFoundException {
-        Film film = filmStorage.getById(id);
-        validation.isFilmExist(film, filmStorage);
-        return filmStorage.getById(id);
+         if (validation.isFilmExist(filmStorage.getById(id), filmStorage)) {
+             return filmStorage.getById(id);
+         }
+         else throw new NotFoundException("Не сузествующий фильм");
     }
 
     public Map<Integer, Film> getAll() {

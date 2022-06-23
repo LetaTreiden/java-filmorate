@@ -29,7 +29,7 @@ public class FilmService {
          if (validation.isFilmExist(filmStorage.getById(id), filmStorage)) {
              return filmStorage.getById(id);
          }
-         else throw new NotFoundException("Не сузествующий фильм");
+         else throw new NotFoundException("Не существующий фильм");
     }
 
     public Map<Integer, Film> getAll() {

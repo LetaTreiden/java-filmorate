@@ -33,8 +33,11 @@ public class UserService {
     }
 
     public User getUser(int id) throws NotFoundException {
-        validator.isUserExist(id, userStorage);
-        return userStorage.getById(id);
+        if (validator.isUserExist(id, userStorage)) {
+            return userStorage.getById(id);
+        } else {
+            throw new NotFoundException("Нет такого пользователя");
+        }
     }
 
     public User create(User user) throws ValidationException {

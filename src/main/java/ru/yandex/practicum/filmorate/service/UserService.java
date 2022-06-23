@@ -25,8 +25,13 @@ public class UserService {
         return userStorage.findAll();
     }
 
-    public Set<Integer> getFriends(int id) throws NotFoundException {
-        return userStorage.getById(id).getFriends();
+    public Set<User> getFriends(int id) throws NotFoundException {
+        Set<Integer> friendsIds = userStorage.getById(id).getFriends();
+        Set<User> friends = new HashSet<>();
+        for(Integer friend : friendsIds){
+            friends.add(userStorage.getById(friend));
+        }
+        return friends;
     }
 
     public User getUser(int id) throws NotFoundException {

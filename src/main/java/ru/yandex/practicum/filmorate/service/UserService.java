@@ -96,6 +96,9 @@ public class UserService {
                 mutualFriends.add(userStorage.getById(id));
             }
         }
+        if (mutualFriends.equals(null)) {
+            throw new NotFoundException("Нет общих друзей");
+        }
         return mutualFriends;
     }
 }

@@ -25,7 +25,7 @@ public class UserController {
 
     //список всех друзей пользователя
     @GetMapping("/{id}/friends")
-    public Set<User> showFriends(@PathVariable int id) throws NotFoundException {
+    public Set<Integer> showFriends(@PathVariable int id) throws NotFoundException {
         return userService.getFriends(id);
     }
 

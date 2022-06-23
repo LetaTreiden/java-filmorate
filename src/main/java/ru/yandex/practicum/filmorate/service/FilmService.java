@@ -41,12 +41,12 @@ public class FilmService {
     }
 
     public Film update(Film film) throws ValidationException, NotFoundException {
+        validation.isFilmExist(film, filmStorage);
         validation.validateFilm(film);
         return filmStorage.update(film);
     }
 
-    public void like(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
-        log.info("start");
+    public void like(Integer filmID, Integer userID) throws NotFoundException {
         Film film = filmStorage.getById(filmID);
         validation.isFilmExist(film, filmStorage);
         Set<Integer> newLike = new HashSet<>();
@@ -55,19 +55,17 @@ public class FilmService {
             filmStorage.getById(filmID).setLikes(newLike);
             log.info("Лайк поставлен");
         } else {
-            throw new ValidationException("Пользователь уже поставил лайк фильму " +
-                    filmStorage.getById(filmID).getName());
+            throw new NotFoundException("Пользователь не найден");
         }
     }
 
-    public void dislike(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
+    public void dislike(Integer filmID, Integer userID) throws NotFoundException {
         Film film = filmStorage.getById(filmID);
         validation.isFilmExist(film, filmStorage);
        if (filmStorage.getById(filmID).getLikes().contains(userID)) {
            filmStorage.getById(filmID).getLikes().clear();
        } else {
-           throw new ValidationException("Пользователь еще не ставил лайк фильму " +
-                   filmStorage.getById(filmID).getName());
+           throw new NotFoundException("Пользователь не найден");
        }
     }
 
@@ -84,5 +82,12 @@ public class FilmService {
                 }
             }
         return rated;
+    }
+
+    public List<Film> mostPopularFilms(Integer count) {
+        return getAll().values().stream()
+                .sorted((o1, o2) -> o2.getLikes().size()-o1.getLikes().size())
+                .limit(Objects.requireNonNullElse(count, 10))
+                .collect(Collectors.toList());
     }
 }

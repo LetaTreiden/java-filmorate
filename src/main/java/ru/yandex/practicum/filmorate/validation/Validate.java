@@ -63,14 +63,11 @@ public class Validate {
         }
     }
     public void isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
-        logger.info("start2");
         System.out.println(film);
         System.out.println(filmStorage.getAll());
         if (film.getId() <= 0 || !filmStorage.getAll().containsKey(film.getId())) {
-            logger.info("ghjk");
             throw new NotFoundException("Нет фильма с таким ID.");
         }
-        logger.info("fine");
     }
 
     public void isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException{

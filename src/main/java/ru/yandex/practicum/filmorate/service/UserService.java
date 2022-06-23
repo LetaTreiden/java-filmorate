@@ -50,8 +50,8 @@ public class UserService {
     }
 
     public User addFriend(Integer id1, Integer id2) throws NotFoundException {
-        Set<Integer> friend1 = new HashSet<>();
-        Set<Integer> friend2 = new HashSet<>();
+        Set<Integer> friend1 = userStorage.getById(id2).getFriends();
+        Set<Integer> friend2 = userStorage.getById(id1).getFriends();
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(id2) &&

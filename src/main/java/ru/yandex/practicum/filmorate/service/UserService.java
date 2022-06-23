@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -17,7 +15,6 @@ import java.util.Set;
 public class UserService {
 
     private final InMemoryUserStorage userStorage;
-    private final static Logger log = LoggerFactory.getLogger(User.class);
     private final static Validate validator = new Validate();
 
     public UserService(InMemoryUserStorage userStorage) {
@@ -48,7 +45,6 @@ public class UserService {
     }
 
     public User addFriend(Integer id1, Integer id2) throws NotFoundException {
-        log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
@@ -69,10 +65,9 @@ public class UserService {
     public User deleteFriend(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<Integer> friend1 = new HashSet<>();
-        Set<Integer> friend2 = new HashSet<>();
-            if (userStorage.getById(id1).getFriends().contains(id2) &&
-                    userStorage.getById(id2).getFriends().contains(id1)) {
+        Set<Integer> friend1 = userStorage.getById(id1).getFriends();
+        Set<Integer> friend2 = userStorage.getById(id2).getFriends();
+            if (userStorage.getById(id1).getFriends().contains(id2)) {
                 friend1.remove(id2);
                 friend2.remove(id1);
 

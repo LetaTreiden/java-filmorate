@@ -11,18 +11,19 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.Validate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
 
-    private InMemoryFilmStorage filmStorage;
+    private final InMemoryFilmStorage filmStorage;
     private Set<Film> rates = new TreeSet<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
 
     public FilmService(InMemoryFilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
-    private Validate validation = new Validate();
+    private final Validate validation = new Validate();
 
     public Film getFilm(int id) throws NotFoundException {
         Film film = filmStorage.getById(id);
@@ -71,19 +72,17 @@ public class FilmService {
     }
 
     public Set getRate(Integer size) {
+        if (size.equals(null)) {
+            size = 10;
+        }
         Set<Film> rated = new HashSet<>();
         int count = 0;
-        if (rates.size() < size) {
             for (Film film: rates) {
                 while (count <= size) {
                     rated.add(film);
                     count++;
                 }
             }
-        } else {
-            rated.addAll(rates);
-        }
         return rated;
     }
-
 }

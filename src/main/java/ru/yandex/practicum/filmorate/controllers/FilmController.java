@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @Slf4j
@@ -29,8 +29,8 @@ public class FilmController implements FilmStorage {
         return filmService.getFilm(id);
     }
 
-   @GetMapping("/popular?count={count}")
-   public Collection<Film> printBestCount(@PathVariable Integer count) {
+   @GetMapping("/popular")
+   public Set printBestCount(@RequestParam(required = false) Integer count) {
         if (count == null || count == 0) {
             count = 10;
         }

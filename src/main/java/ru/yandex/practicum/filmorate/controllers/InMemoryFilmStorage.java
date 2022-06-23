@@ -38,16 +38,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film update(@RequestBody Film film) throws ValidationException, NotFoundException {
-        if (films.containsKey(film.getId())) {
-            films.put(film.getId(), film);
-            logger.info("Фильм обновлен");
-        } else {
-            logger.error("Попытка обновить несуществующий фильм");
-            throw new NotFoundException("Попытка обновить несуществующий фильм");
-        }
+    public Film update(@RequestBody Film film) {
+        films.put(film.getId(), film);
         return film;
     }
-
-
 }

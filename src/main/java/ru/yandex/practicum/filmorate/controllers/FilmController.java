@@ -2,19 +2,15 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.validation.Validate;
 
-import java.beans.BeanProperty;
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -24,7 +20,7 @@ public class FilmController implements FilmStorage {
     private final FilmService filmService;
 
     @GetMapping
-    public Collection<Film> getAll() {
+    public Map<Integer, Film> getAll() {
         return filmService.getAll();
     }
 

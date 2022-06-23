@@ -3,13 +3,11 @@ package ru.yandex.practicum.filmorate.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validation.Validate;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,18 +18,10 @@ public class UserService {
 
     private final InMemoryUserStorage userStorage;
     private final static Logger log = LoggerFactory.getLogger(User.class);
+    private final static Validate validator = new Validate();
 
     public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
-    }
-
-    private void validate(User user) throws NotFoundException {
-        String string;
-        if (!userStorage.findAll().contains(user)) {
-            string = "Пользователь " + user.getLogin() + " не существует";
-            log.error(string);
-            throw new NotFoundException(string);
-        }
     }
 
     public Collection<User> getAll() {
@@ -42,7 +32,8 @@ public class UserService {
         return userStorage.getById(id).getFriends();
     }
 
-    public User getUser(int id) {
+    public User getUser(int id) throws NotFoundException {
+        validator.isUserExist(id, userStorage);
         return userStorage.getById(id);
     }
 
@@ -55,11 +46,12 @@ public class UserService {
     }
 
     public User addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
+
         log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
-        validate(userStorage.getById(id1));
-        validate(userStorage.getById(id2));
+        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
+        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(id2) &&
                     !userStorage.getById(id2).getFriends().contains(id2)) {
                 friend1.add(id1);
@@ -75,8 +67,8 @@ public class UserService {
     }
 
     public void deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {
-        validate(userStorage.getById(id1));
-        validate(userStorage.getById(id2));
+        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
+        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(userStorage.getById(id2)) &&
                     userStorage.getById(id2).getFriends().contains(userStorage.getById(id1))) {
                 userStorage.getById(id1).getFriends().remove(userStorage.getById(id2));
@@ -88,8 +80,8 @@ public class UserService {
     }
 
     public Set showMutualFriends(int id1, int id2) throws NotFoundException {
-        validate(userStorage.getById(id1));
-        validate(userStorage.getById(id2));
+        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
+        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
         Set<Integer> mutualFriends = new HashSet<>();
         for (Integer id : userStorage.getById(id1).getFriends()) {
             if (userStorage.getById(id2).getFriends().contains(id)) {

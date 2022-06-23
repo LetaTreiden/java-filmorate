@@ -15,37 +15,39 @@ import java.util.*;
 @Service
 public class FilmService {
 
-    private final InMemoryFilmStorage filmStorage;
+    private InMemoryFilmStorage filmStorage;
     private Set<Film> rates = new TreeSet<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
-    private final static Validate validation = new Validate();
 
     public FilmService(InMemoryFilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
+    private Validate validation = new Validate();
 
     public Film getFilm(int id) throws NotFoundException {
-        validation.isFilmExist(id);
+        Film film = filmStorage.getById(id);
+        validation.isFilmExist(film, filmStorage);
         return filmStorage.getById(id);
     }
 
-    public Collection<Film> getAll() {
+    public Map<Integer, Film> getAll() {
         return filmStorage.getAll();
     }
 
     public Film create(Film film) throws ValidationException {
-        validation.validate(film);
+        validation.validateFilm(film);
         return filmStorage.create(film);
     }
 
     public Film update(Film film) throws ValidationException, NotFoundException {
-        validation.validate(film);
+        validation.validateFilm(film);
         return filmStorage.update(film);
     }
 
     public void like(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
-        validation.isFilmExist(filmID);
-        validation.isUserExist(userID);
+        log.info("start");
+        Film film = filmStorage.getById(filmID);
+        validation.isFilmExist(film, filmStorage);
         Set<Integer> newLike = new HashSet<>();
         newLike.add(userID);
         if (!filmStorage.getById(filmID).getLikes().contains(userID)) {
@@ -58,8 +60,8 @@ public class FilmService {
     }
 
     public void dislike(Integer filmID, Integer userID) throws ValidationException, NotFoundException {
-        validation.isFilmExist(filmID);
-        validation.isUserExist(userID);
+        Film film = filmStorage.getById(filmID);
+        validation.isFilmExist(film, filmStorage);
        if (filmStorage.getById(filmID).getLikes().contains(userID)) {
            filmStorage.getById(filmID).getLikes().clear();
        } else {

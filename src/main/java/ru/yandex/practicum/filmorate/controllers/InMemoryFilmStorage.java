@@ -18,8 +18,12 @@ public class InMemoryFilmStorage implements FilmStorage {
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
     private int count = 0;
 
-    public Film getById(int id) {
-        return films.get(id);
+    public Film getById(int id) throws NotFoundException {
+        if (films.containsKey(id)) {
+            return films.get(id);
+        } else {
+            throw new NotFoundException("Нет такого фильма");
+        }
     }
 
     @Override

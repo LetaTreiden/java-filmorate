@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class FilmService {
 
     private final InMemoryFilmStorage filmStorage;
-    private Set<Film> rates = new TreeSet<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
 
     public FilmService(InMemoryFilmStorage filmStorage) {
@@ -70,22 +69,7 @@ public class FilmService {
        }
     }
 
-    public Set getRate(Integer size) {
-        if (size.equals(null)) {
-            size = 10;
-        }
-        Set<Film> rated = new HashSet<>();
-        int count = 0;
-            for (Film film: rates) {
-                while (count <= size) {
-                    rated.add(film);
-                    count++;
-                }
-            }
-        return rated;
-    }
-
-    public List<Film> mostPopularFilms(Integer count) {
+    public List<Film> getRate(Integer count) {
         return getAll().values().stream()
                 .sorted((o1, o2) -> o2.getLikes().size()-o1.getLikes().size())
                 .limit(Objects.requireNonNullElse(count, 10))

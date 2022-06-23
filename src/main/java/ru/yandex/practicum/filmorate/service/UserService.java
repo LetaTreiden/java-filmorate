@@ -54,8 +54,8 @@ public class UserService {
         log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
-        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
-        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
+        if (validator.isUserExist(userStorage.getById(id1).getId(), userStorage)
+           && validator.isUserExist(userStorage.getById(id2).getId(), userStorage)) {
             if (!userStorage.getById(id1).getFriends().contains(id2) &&
                     !userStorage.getById(id2).getFriends().contains(id2)) {
                 friend1.add(id1);
@@ -67,7 +67,10 @@ public class UserService {
                 throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
                         userStorage.getById(id2).getLogin() + " уже друзья!");
             }
-            return userStorage.getById(id1);
+        } else {
+            throw new NotFoundException("Пользователя/ей не сущесвует");
+        }
+        return userStorage.getById(id1);
     }
 
     public User deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {

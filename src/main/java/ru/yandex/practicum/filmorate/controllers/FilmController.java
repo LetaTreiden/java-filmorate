@@ -34,7 +34,7 @@ public class FilmController implements FilmStorage {
         if (count == null || count == 0) {
             count = 10;
         }
-        return filmService.mostPopularFilms(count);
+        return filmService.getRate(count);
    }
 
     @PostMapping

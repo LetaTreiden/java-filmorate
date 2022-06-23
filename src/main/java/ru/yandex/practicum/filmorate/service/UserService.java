@@ -28,16 +28,13 @@ public class UserService {
         return userStorage.findAll();
     }
 
-    public Set<Integer> getFriends(int id) {
+    public Set<Integer> getFriends(int id) throws NotFoundException {
         return userStorage.getById(id).getFriends();
     }
 
     public User getUser(int id) throws NotFoundException {
-        if (validator.isUserExist(id, userStorage)) {
-            return userStorage.getById(id);
-        } else {
-            throw new NotFoundException("Нет такого пользователя");
-        }
+        validator.isUserExist(id, userStorage);
+        return userStorage.getById(id);
     }
 
     public User create(User user) throws ValidationException {

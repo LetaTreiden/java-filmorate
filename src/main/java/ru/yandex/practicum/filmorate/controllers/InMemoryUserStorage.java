@@ -18,8 +18,6 @@ public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(User.class);
     private int count;
-    private final static Validate validator = new Validate();
-
     @Override
     public Collection<User> findAll() {
         log.info("Список пользователей напечатан");
@@ -48,8 +46,12 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getById(int id)  {
-        log.info("Пользователь напечатан");
-        return users.get(id);
+    public User getById(int id) throws NotFoundException {
+        if (users.containsKey(id)) {
+            log.info("Пользователь напечатан");
+            return users.get(id);
+        } else {
+            throw new NotFoundException("нет такого пользователя");
+        }
     }
 }

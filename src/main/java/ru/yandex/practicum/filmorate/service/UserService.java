@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.validation.Validate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -26,10 +27,10 @@ public class UserService {
     }
 
     public Set<User> getFriends(int id) throws NotFoundException {
-        Set<Integer> friendsIds = userStorage.getById(id).getFriends();
+        Set<Integer> ids = userStorage.getById(id).getFriends();
         Set<User> friends = new HashSet<>();
-        for(Integer friend : friendsIds){
-            friends.add(userStorage.getById(friend));
+        for(Integer id1 : ids){
+            friends.add(userStorage.getById(id1));
         }
         return friends;
     }
@@ -88,17 +89,12 @@ public class UserService {
     }
 
     public Set showMutualFriends(int id1, int id2) throws NotFoundException {
-        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
-        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<User> mutualFriends = new HashSet<>();
-        for (Integer id : userStorage.getById(id1).getFriends()) {
-            if (userStorage.getById(id2).getFriends().contains(id)) {
-                mutualFriends.add(userStorage.getById(id));
-            }
-        }
-        if (mutualFriends.equals(null)) {
-            throw new NotFoundException("Нет общих друзей");
-        }
-        return mutualFriends;
+        validator.isUserExist(id1, userStorage);
+        validator.isUserExist(id2, userStorage);
+        Set<User> user1 = getFriends(id1);
+        Set<User> user2 = getFriends(id2);
+        return user1.stream()
+                .filter(user2::contains)
+                .collect(Collectors.toSet());
     }
 }

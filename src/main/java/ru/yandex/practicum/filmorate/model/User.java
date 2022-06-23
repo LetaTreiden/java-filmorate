@@ -13,5 +13,11 @@ public class User {
     private int id;
     private String email;
     private LocalDate birthday;
-    private Set<Integer> friends = new HashSet<>();
+    private Set<User> friends = new HashSet<>();
+
+    public String toString() {
+        return "Логин - " + getLogin() +
+               "; ID - " + getId() +
+               "; email - " + getEmail();
+    }
 }

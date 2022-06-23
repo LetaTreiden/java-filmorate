@@ -25,7 +25,7 @@ public class UserService {
         return userStorage.findAll();
     }
 
-    public Set<Integer> getFriends(int id) throws NotFoundException {
+    public Set<User> getFriends(int id) throws NotFoundException {
         return userStorage.getById(id).getFriends();
     }
 
@@ -45,14 +45,14 @@ public class UserService {
     }
 
     public User addFriend(Integer id1, Integer id2) throws NotFoundException {
-        Set<Integer> friend1 = new HashSet<>();
-        Set<Integer> friend2 = new HashSet<>();
+        Set<User> friend1 = new HashSet<>();
+        Set<User> friend2 = new HashSet<>();
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(id2) &&
                     !userStorage.getById(id2).getFriends().contains(id2)) {
-                friend1.add(id1);
-                friend2.add(id2);
+                friend1.add(userStorage.getById(id1));
+                friend2.add(userStorage.getById(id2));
 
                 userStorage.getById(id1).setFriends(friend2);
                 userStorage.getById(id2).setFriends(friend1);
@@ -65,8 +65,8 @@ public class UserService {
     public User deleteFriend(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<Integer> friend1 = userStorage.getById(id1).getFriends();
-        Set<Integer> friend2 = userStorage.getById(id2).getFriends();
+        Set<User> friend1 = userStorage.getById(id1).getFriends();
+        Set<User> friend2 = userStorage.getById(id2).getFriends();
             if (userStorage.getById(id1).getFriends().contains(id2)) {
                 friend1.remove(id2);
                 friend2.remove(id1);
@@ -86,9 +86,9 @@ public class UserService {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
         Set<User> mutualFriends = new HashSet<>();
-        for (Integer id : userStorage.getById(id1).getFriends()) {
-            if (userStorage.getById(id2).getFriends().contains(id)) {
-                mutualFriends.add(userStorage.getById(id));
+        for (User user : userStorage.getById(id1).getFriends()) {
+            if (userStorage.getById(id2).getFriends().contains(user)) {
+                mutualFriends.add(userStorage.getById(user.getId()));
             }
         }
         return mutualFriends;

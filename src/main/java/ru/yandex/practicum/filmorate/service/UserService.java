@@ -50,12 +50,12 @@ public class UserService {
         return userStorage.update(user);
     }
 
-    public User addFriend(Integer id1, Integer id2) throws ValidationException, NotFoundException {
+    public User addFriend(Integer id1, Integer id2) throws NotFoundException {
         log.info("Процесс добавления в друзья");
         Set<Integer> friend1 = new HashSet<>();
         Set<Integer> friend2 = new HashSet<>();
-        if (validator.isUserExist(userStorage.getById(id1).getId(), userStorage)
-           && validator.isUserExist(userStorage.getById(id2).getId(), userStorage)) {
+        validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
+        validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(id2) &&
                     !userStorage.getById(id2).getFriends().contains(id2)) {
                 friend1.add(id1);
@@ -64,25 +64,20 @@ public class UserService {
                 userStorage.getById(id1).setFriends(friend2);
                 userStorage.getById(id2).setFriends(friend1);
             } else {
-                throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
-                        userStorage.getById(id2).getLogin() + " уже друзья!");
+                throw new NotFoundException("Пользователя/пользователей не существует");
             }
-        } else {
-            throw new NotFoundException("Пользователя/ей не сущесвует");
-        }
         return userStorage.getById(id1);
     }
 
-    public User deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {
+    public User deleteFriend(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-            if (!userStorage.getById(id1).getFriends().contains(id2) &&
+            if (userStorage.getById(id1).getFriends().contains(id2) &&
                     userStorage.getById(id2).getFriends().contains(id1)) {
                 userStorage.getById(id1).getFriends().remove(id2);
                 userStorage.getById(id2).getFriends().remove(id1);
             } else {
-                throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
-                        userStorage.getById(id2).getLogin() + " не друзья!");
+                throw new NotFoundException("Пользователя/пользователей не существует");
             }
         return userStorage.getById(id1);
     }

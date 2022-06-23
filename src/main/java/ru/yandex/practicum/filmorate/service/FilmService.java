@@ -29,7 +29,7 @@ public class FilmService {
          return filmStorage.getById(id);
     }
 
-    public Map<Integer, Film> getAll() {
+    public Collection<Film> getAll() {
         return filmStorage.getAll();
     }
 
@@ -68,7 +68,7 @@ public class FilmService {
     }
 
     public List<Film> getRate(Integer count) {
-        return getAll().values().stream()
+        return filmStorage.getFilms().values().stream()
                 .sorted((o1, o2) -> o2.getLikes().size()-o1.getLikes().size())
                 .limit(Objects.requireNonNullElse(count, 10))
                 .collect(Collectors.toList());

@@ -8,11 +8,11 @@ import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.Map;
+import java.util.Collection;
 
 public interface FilmStorage {
     @GetMapping
-    Map<Integer, Film> getAll();
+    Collection<Film> getAll();
 
     @PostMapping
     Film create(@RequestBody Film film) throws ValidationException;

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -20,7 +20,7 @@ public class FilmController implements FilmStorage {
     private final FilmService filmService;
 
     @GetMapping
-    public Map<Integer, Film> getAll() {
+    public Collection<Film> getAll() {
         return filmService.getAll();
     }
 

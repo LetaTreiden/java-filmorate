@@ -52,15 +52,13 @@ public class UserController {
     }
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
-    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
-            NotFoundException {
+    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws NotFoundException {
         userService.addFriend(id, friendId);
     }
 
     //удалить друга
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws ValidationException,
-            NotFoundException {
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws NotFoundException {
         userService.deleteFriend(id, friendId);
     }
 }

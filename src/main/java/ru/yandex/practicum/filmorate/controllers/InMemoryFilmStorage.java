@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,12 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Map<Integer, Film> getAll() {
+    public Collection<Film> getAll() {
+        logger.info("Выведен список всех фильмов");
+        return films.values();
+    }
+
+    public Map<Integer, Film> getFilms() {
         logger.info("Выведен список всех фильмов");
         return films;
     }

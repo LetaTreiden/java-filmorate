@@ -65,7 +65,7 @@ public class Validate {
     public boolean isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
         System.out.println(film);
         System.out.println(filmStorage.getAll());
-        if (film.getId() <= 0 || !filmStorage.getAll().containsKey(film.getId())) {
+        if (film.getId() <= 0 || !filmStorage.getFilms().containsKey(film.getId())) {
             throw new NotFoundException("Нет фильма с таким ID.");
         }
         return true;

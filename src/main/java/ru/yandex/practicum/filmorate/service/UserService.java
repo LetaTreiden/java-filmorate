@@ -82,10 +82,10 @@ public class UserService {
     public Set showMutualFriends(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<Integer> mutualFriends = new HashSet<>();
+        Set<User> mutualFriends = new HashSet<>();
         for (Integer id : userStorage.getById(id1).getFriends()) {
             if (userStorage.getById(id2).getFriends().contains(id)) {
-                mutualFriends.add(id);
+                mutualFriends.add(userStorage.getById(id));
             }
         }
         return mutualFriends;

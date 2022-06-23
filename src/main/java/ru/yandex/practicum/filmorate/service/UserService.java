@@ -65,7 +65,7 @@ public class UserService {
             return userStorage.getById(id1);
     }
 
-    public void deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {
+    public User deleteFriend(int id1, int id2) throws ValidationException, NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
             if (!userStorage.getById(id1).getFriends().contains(id2) &&
@@ -76,6 +76,7 @@ public class UserService {
                 throw new ValidationException("Пользователи " + userStorage.getById(id1).getLogin() + " и " +
                         userStorage.getById(id2).getLogin() + " не друзья!");
             }
+        return userStorage.getById(id1);
     }
 
     public Set showMutualFriends(int id1, int id2) throws NotFoundException {

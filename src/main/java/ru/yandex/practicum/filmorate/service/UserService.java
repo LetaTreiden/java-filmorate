@@ -69,20 +69,17 @@ public class UserService {
     public User deleteFriend(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<Integer> friend1 = userStorage.getById(id1).getFriends();
-        Set<Integer> friend2 = userStorage.getById(id2).getFriends();
-            if (userStorage.getById(id1).getFriends().contains(id2)) {
-                friend1.remove(id2);
-                friend2.remove(id1);
+        if (userStorage.getById(id1).getFriends().contains(id2)) {
+            userStorage.getById(id1).getFriends().remove(id2);
+        } else {
+            throw new NotFoundException("Нет такого пользователя");
+        }
 
-                userStorage.getById(id1).getFriends().clear();
-                userStorage.getById(id1).setFriends(friend1);
-
-                userStorage.getById(id2).getFriends().clear();
-                userStorage.getById(id2).setFriends(friend2);
-            } else {
-                throw new NotFoundException("Пользователя/пользователей не существует");
-            }
+        if (userStorage.getById(id2).getFriends().contains(id1)) {
+            userStorage.getById(id2).getFriends().remove(id1);
+        } else {
+            throw new NotFoundException("Нет такого пользователя");
+        }
         return userStorage.getById(id1);
     }
 

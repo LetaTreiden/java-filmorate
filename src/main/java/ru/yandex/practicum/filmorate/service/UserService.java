@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validation.Validate;
+import ru.yandex.practicum.filmorate.validation.Validator;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ import java.util.*;
 public class UserService {
 
     private final InMemoryUserStorage userStorage;
-    private final static Validate validator = new Validate();
+    private final static Validator validator = new Validator();
     private final static Logger log = LoggerFactory.getLogger(User.class);
 
     public UserService(InMemoryUserStorage userStorage) {

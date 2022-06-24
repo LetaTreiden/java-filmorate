@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.controllers.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validation.Validate;
+import ru.yandex.practicum.filmorate.validation.Validator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    private final Validate validation = new Validate();
+    private final Validator validation = new Validator();
 
     public Film getFilm(int id) throws NotFoundException {
         validation.isFilmExist(filmStorage.getById(id), filmStorage);

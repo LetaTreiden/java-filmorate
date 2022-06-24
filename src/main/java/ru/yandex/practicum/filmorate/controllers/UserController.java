@@ -46,11 +46,13 @@ public class UserController {
     public User create(@RequestBody User user) throws ValidationException {
         return userService.create(user);
     }
+
     //обновить существующего юзера
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException, NotFoundException {
         return userService.update(user);
     }
+
     //добавить нового друга
     @PutMapping("/{id}/friends/{friendId}")
     public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws NotFoundException {

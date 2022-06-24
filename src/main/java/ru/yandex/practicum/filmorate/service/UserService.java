@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -7,7 +9,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.Validate;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -15,36 +16,43 @@ public class UserService {
 
     private final InMemoryUserStorage userStorage;
     private final static Validate validator = new Validate();
+    private final static Logger log = LoggerFactory.getLogger(User.class);
 
     public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
     public Collection<User> getAll() {
+        log.info("Список пользователей получен");
         return userStorage.findAll();
     }
 
     public Set<User> getFriends(int id) throws NotFoundException {
         Set<Integer> ids = userStorage.getById(id).getFriends();
         Set<User> friends = new HashSet<>();
-        for(Integer id1 : ids){
+        for (Integer id1 : ids) {
             friends.add(userStorage.getById(id1));
         }
+        log.info("Список друзей получен");
         return friends;
     }
 
     public User getUser(int id) throws NotFoundException {
         validator.isUserExist(id, userStorage);
+        log.info("Пользователь получен");
         return userStorage.getById(id);
     }
 
     public User create(User user) throws ValidationException {
         validator.validateUser(user);
+        log.info("Пользователь создан");
         return userStorage.create(user);
     }
 
     public User update(User user) throws ValidationException, NotFoundException {
+        validator.isUserExist(user.getId(), userStorage);
         validator.validateUser(user);
+        log.info("Пользователь обновлен");
         return userStorage.update(user);
     }
 
@@ -53,16 +61,16 @@ public class UserService {
         Set<Integer> friend2 = userStorage.getById(id1).getFriends();
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-            if (!userStorage.getById(id1).getFriends().contains(id2) &&
-                    !userStorage.getById(id2).getFriends().contains(id2)) {
-                friend1.add(id1);
-                friend2.add(id2);
+        if (!userStorage.getById(id1).getFriends().contains(id2) && !userStorage.getById(id2).getFriends().contains(id2)) {
+            friend1.add(id1);
+            friend2.add(id2);
 
-                userStorage.getById(id1).setFriends(friend2);
-                userStorage.getById(id2).setFriends(friend1);
-            } else {
-                throw new NotFoundException("Пользователя/пользователей не существует");
-            }
+            userStorage.getById(id1).setFriends(friend2);
+            userStorage.getById(id2).setFriends(friend1);
+            log.info("Пользователи теперь друзья");
+        } else {
+            throw new NotFoundException("Пользователя/пользователей не существует");
+        }
         return userStorage.getById(id1);
     }
 
@@ -80,6 +88,7 @@ public class UserService {
         } else {
             throw new NotFoundException("Нет такого пользователя");
         }
+        log.info("Пользователи больше не друзья");
         return userStorage.getById(id1);
     }
 
@@ -92,6 +101,7 @@ public class UserService {
                 mutualFriends.add(userStorage.getById(id));
             }
         }
+        log.info("Список общих друзей получен");
         return mutualFriends;
     }
 }

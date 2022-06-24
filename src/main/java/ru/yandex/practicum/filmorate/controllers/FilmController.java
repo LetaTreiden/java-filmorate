@@ -29,13 +29,13 @@ public class FilmController implements FilmStorage {
         return filmService.getFilm(id);
     }
 
-   @GetMapping("/popular")
-   public List<Film> printBestCount(@RequestParam(required = false) Integer count) {
+    @GetMapping("/popular")
+    public List<Film> printBestCount(@RequestParam(required = false) Integer count) {
         if (count == null || count == 0) {
             count = 10;
         }
         return filmService.getRate(count);
-   }
+    }
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {

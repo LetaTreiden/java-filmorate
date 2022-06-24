@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -16,7 +14,6 @@ import java.util.Map;
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
-    private static final Logger logger = LoggerFactory.getLogger(Film.class);
     private int count = 0;
 
     public Film getById(int id) throws NotFoundException {
@@ -29,12 +26,10 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getAll() {
-        logger.info("Выведен список всех фильмов");
         return films.values();
     }
 
     public Map<Integer, Film> getFilms() {
-        logger.info("Выведен список всех фильмов");
         return films;
     }
 
@@ -43,7 +38,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         count++;
         film.setId(count);
         films.put(film.getId(), film);
-        logger.info("Фильм добавлен");
         return film;
     }
 

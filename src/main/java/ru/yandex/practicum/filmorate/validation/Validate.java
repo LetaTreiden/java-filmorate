@@ -17,6 +17,7 @@ public class Validate {
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
     private static final LocalDate FIST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     String string;
+
     public void validateFilm(Film film) throws ValidationException {
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
@@ -62,16 +63,18 @@ public class Validate {
             throw new ValidationException(string);
         }
     }
+
     public boolean isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
         System.out.println(film);
         System.out.println(filmStorage.getAll());
         if (film.getId() <= 0 || !filmStorage.getFilms().containsKey(film.getId())) {
+            logger.error("Нет фильма с таким ID.");
             throw new NotFoundException("Нет фильма с таким ID.");
         }
         return true;
     }
 
-    public boolean isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException{
+    public boolean isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException {
         if (!userStorage.findAll().contains(userStorage.getById(id))) {
             string = "Такого пользователя не существует";
             logger.error(string);

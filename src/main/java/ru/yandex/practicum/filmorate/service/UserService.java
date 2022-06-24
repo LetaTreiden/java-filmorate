@@ -7,9 +7,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.Validate;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -87,10 +86,10 @@ public class UserService {
         return userStorage.getById(id1);
     }
 
-    public Set showMutualFriends(int id1, int id2) throws NotFoundException {
+    public List showMutualFriends(int id1, int id2) throws NotFoundException {
         validator.isUserExist(userStorage.getById(id1).getId(), userStorage);
         validator.isUserExist(userStorage.getById(id2).getId(), userStorage);
-        Set<User> mutualFriends = new HashSet<>();
+        List<User> mutualFriends = new ArrayList<>();
         for (Integer id : userStorage.getById(id1).getFriends()) {
             if (userStorage.getById(id2).getFriends().contains(id)) {
                 mutualFriends.add(userStorage.getById(id));

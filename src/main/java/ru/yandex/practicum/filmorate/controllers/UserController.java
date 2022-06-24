@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 
@@ -31,7 +32,7 @@ public class UserController {
 
     //показать всех общих друзей
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Set showMutual(@PathVariable int id, @PathVariable int otherId) throws NotFoundException {
+    public List showMutual(@PathVariable int id, @PathVariable int otherId) throws NotFoundException {
         return userService.showMutualFriends(id, otherId);
     }
 

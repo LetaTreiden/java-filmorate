@@ -1,74 +1,68 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import lombok.AllArgsConstructor;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController {
-    private final Map<Integer, User> users = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(User.class);
-    private int count;
+    UserService userService;
 
+    //получить список всех пользователей
     @GetMapping
     public Collection<User> findAll() {
-        log.info("Список пользователей напечатан");
-        return users.values();
+        return userService.getAll();
     }
 
+    //список всех друзей пользователя
+    @GetMapping("/{id}/friends")
+    public Set<User> showFriends(@PathVariable int id) throws NotFoundException {
+        return userService.getFriends(id);
+    }
+
+    //показать всех общих друзей
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List showMutual(@PathVariable int id, @PathVariable int otherId) throws NotFoundException {
+        return userService.showMutualFriends(id, otherId);
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable int id) throws NotFoundException {
+        return userService.getUser(id);
+    }
+
+    //создать нового юзера
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        count++;
-        user.setId(count);
-        validate(user);
-        users.put(user.getId(), user);
-        log.info("Пользователь добавлен");
-        return user;
+        return userService.create(user);
     }
 
+    //обновить существующего юзера
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
-        if (users.containsKey(user.getId())) {
-            validate(user);
-            users.put(user.getId(), user);
-            log.info("Пользователь обновлен");
-        } else {
-            log.error("Попытка обновить несуществующего пользователя");
-            throw new ValidationException("Попытка обновить несуществующего пользователя");
-        }
-
-        return user;
+    public User update(@RequestBody User user) throws ValidationException, NotFoundException {
+        return userService.update(user);
     }
 
-    private void validate(User user) throws ValidationException {
-        String string;
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            string = "Адрес электронной почты не может быть пустым.";
-            log.error(string);
-            throw new ValidationException(string);
-        }
-        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
-            string = ("Логин не может быть пустым или содержать пробелы");
-            log.error(string);
-            throw new ValidationException(string);
-        }
-        if (user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-            log.error("Имя равно логину");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            string = ("Дата рождения не может быть выбрана в будущем");
-            log.error(string);
-            throw new ValidationException(string);
-        }
+    //добавить нового друга
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addNewFriend(@PathVariable int id, @PathVariable int friendId) throws NotFoundException {
+        userService.addFriend(id, friendId);
+    }
+
+    //удалить друга
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) throws NotFoundException {
+        userService.deleteFriend(id, friendId);
     }
 }
 

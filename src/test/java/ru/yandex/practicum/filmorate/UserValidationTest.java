@@ -1,14 +1,19 @@
 package ru.yandex.practicum.filmorate;
 
+import ru.yandex.practicum.filmorate.controllers.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.controllers.UserController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.service.UserService;
+
 import java.time.LocalDate;
 
 public class UserValidationTest {
-    private static final UserController controller = new UserController();
+    private static final InMemoryUserStorage userStorage = new InMemoryUserStorage();
+    private static final UserService service = new UserService(userStorage);
+    private static final UserController controller = new UserController(service);
 
     @Test
     public void createIfEverythingIsOk() throws ValidationException {

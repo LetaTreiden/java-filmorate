@@ -16,9 +16,9 @@ import java.time.LocalDate;
 public class Validator {
     private static final Logger logger = LoggerFactory.getLogger(Film.class);
     private static final LocalDate FIST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
-    private static String string;
 
     public void validateFilm(Film film) throws ValidationException {
+        String string;
         if (film.getName().isEmpty() || film.getName() == null) {
             string = "Название не может быть пустым";
             logger.error(string);
@@ -65,8 +65,10 @@ public class Validator {
     }
 
     public boolean isFilmExist(Film film, InMemoryFilmStorage filmStorage) throws NotFoundException {
+        String string;
         if (film.getId() <= 0 || !filmStorage.getFilms().containsKey(film.getId())) {
-            logger.error("Нет фильма с таким ID.");
+            string = "Нет фильма с таким ID.";
+            logger.error(string);
             throw new NotFoundException("Нет фильма с таким ID.");
         }
         logger.info("фильм существует");
@@ -74,6 +76,7 @@ public class Validator {
     }
 
     public boolean isUserExist(int id, InMemoryUserStorage userStorage) throws NotFoundException {
+        String string;
         if (!userStorage.findAll().contains(userStorage.getById(id))) {
             string = "Такого пользователя не существует";
             logger.error(string);
